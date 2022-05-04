@@ -1,5 +1,8 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Azure Active Directory Pod Identity for Kubernetes – Getting Started</title><link>https://azure.github.io/aad-pod-identity/docs/getting-started/</link><description>Recent content in Getting Started on Azure Active Directory Pod Identity for Kubernetes</description><generator>Hugo -- gohugo.io</generator><lastBuildDate>Sun, 04 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://azure.github.io/aad-pod-identity/docs/getting-started/index.xml" rel="self" type="application/rss+xml"/><item><title>Docs: Role Assignment</title><link>https://azure.github.io/aad-pod-identity/docs/getting-started/role-assignment/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://azure.github.io/aad-pod-identity/docs/getting-started/role-assignment/</guid><description>
 &lt;p>Your cluster will need the correct role assignment configuration to perform Azure-related operations such as assigning and un-assigning the identity on the underlying VM/VMSS. You can run the following commands to help you set up the appropriate role assignments for your cluster identity before deploying aad-pod-identity.&lt;/p>
+&lt;blockquote>
+&lt;p>NOTE: If you&amp;rsquo;re running aad-pod-identity in &lt;a href="../../configure/pod_identity_in_managed_mode">managed mode&lt;/a> you don&amp;rsquo;t need these role assignments. If you&amp;rsquo;re using the AKS pod-managed identities add-on, refer to the &lt;a href="https://docs.microsoft.com/en-us/azure/aks/use-azure-ad-pod-identity">AKS add-on documentation&lt;/a> for the required role assignments.&lt;/p>
+&lt;/blockquote>
 &lt;p>AKS and aks-engine clusters require an identity to communicate with Azure. This identity can be either a &lt;strong>managed identity&lt;/strong> (in the form of system-assigned identity or user-assigned identity) or a &lt;strong>service principal&lt;/strong>. This section explains various role assignments that need to be performed before using AAD Pod Identity. Without the proper role assignments, your Azure cluster will not have the correct permission to assign and un-assign identities from the underlying virtual machines (VM) or virtual machine scale sets (VMSS).&lt;/p>
 &lt;p>In the case of self-managed clusters (manual installation of Kubernetes on Azure VMs), you&amp;rsquo;ll need to assign a &lt;strong>user-assigned managed identity&lt;/strong> to the VM or VMSS or use a &lt;strong>service principal&lt;/strong>. This is required for MIC to perform Azure-related operations for assigning/un-assigning the identity required for applications.&lt;/p>
 &lt;div class="highlight">&lt;pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">&lt;span style="color:#204a87">export&lt;/span> &lt;span style="color:#000">SUBSCRIPTION_ID&lt;/span>&lt;span style="color:#ce5c00;font-weight:bold">=&lt;/span>&lt;span style="color:#4e9a06">&amp;#34;&amp;lt;SubscriptionID&amp;gt;&amp;#34;&lt;/span>
@@ -57,11 +60,11 @@ curl -s https://raw.githubusercontent.com/Azure/aad-pod-identity/master/hack/rol
 &lt;tbody>
 &lt;tr>
 &lt;td>AKS cluster with service principal&lt;/td>
-&lt;td>&lt;code>az aks show -g &amp;lt;AKSResourceGroup&amp;gt; -n &amp;lt;AKSClusterName&amp;gt; --query servicePrincipalProfile.clientId -otsv&lt;/code>&lt;/td>
+&lt;td>&lt;code>az aks show -g &amp;lt;AKSResourceGroup&amp;gt; -n &amp;lt;AKSClusterName&amp;gt; --query servicePrincipalProfile.clientId -o tsv&lt;/code>&lt;/td>
 &lt;/tr>
 &lt;tr>
 &lt;td>AKS cluster with managed identity&lt;/td>
-&lt;td>&lt;code>az aks show -g &amp;lt;AKSResourceGroup&amp;gt; -n &amp;lt;AKSClusterName&amp;gt; --query identityProfile.kubeletidentity.clientId -otsv&lt;/code>&lt;/td>
+&lt;td>&lt;code>az aks show -g &amp;lt;AKSResourceGroup&amp;gt; -n &amp;lt;AKSClusterName&amp;gt; --query identityProfile.kubeletidentity.clientId -o tsv&lt;/code>&lt;/td>
 &lt;/tr>
 &lt;tr>
 &lt;td>aks-engine cluster with service principal&lt;/td>
@@ -69,11 +72,11 @@ curl -s https://raw.githubusercontent.com/Azure/aad-pod-identity/master/hack/rol
 &lt;/tr>
 &lt;tr>
 &lt;td>aks-engine cluster with system-assigned identity&lt;/td>
-&lt;td>&lt;code>az &amp;lt;vm|vmss&amp;gt; identity show -g &amp;lt;NodeResourceGroup&amp;gt; -n &amp;lt;VM|VMSS Name&amp;gt; --query principalId -otsv&lt;/code>&lt;/td>
+&lt;td>&lt;code>az &amp;lt;vm|vmss&amp;gt; identity show -g &amp;lt;NodeResourceGroup&amp;gt; -n &amp;lt;VM|VMSS Name&amp;gt; --query principalId -o tsv&lt;/code>&lt;/td>
 &lt;/tr>
 &lt;tr>
 &lt;td>aks-engine cluster with user-assigned identity&lt;/td>
-&lt;td>&lt;code>az &amp;lt;vm|vmss&amp;gt; identity show -g &amp;lt;NodeResourceGroup&amp;gt; -n &amp;lt;VM|VMSS Name&amp;gt; --query userAssignedIdentities -otsv&lt;/code>, then copy the &lt;code>clientID&lt;/code> of the selected user-assigned identity&lt;/td>
+&lt;td>&lt;code>az &amp;lt;vm|vmss&amp;gt; identity show -g &amp;lt;NodeResourceGroup&amp;gt; -n &amp;lt;VM|VMSS Name&amp;gt; --query userAssignedIdentities -o tsv&lt;/code>, then copy the &lt;code>clientID&lt;/code> of the selected user-assigned identity&lt;/td>
 &lt;/tr>
 &lt;/tbody>
 &lt;/table>
@@ -110,7 +113,7 @@ az role assignment create --role &lt;span style="color:#4e9a06">&amp;#34;Virtual
 &lt;/ul></description></item><item><title>Docs: Installation</title><link>https://azure.github.io/aad-pod-identity/docs/getting-started/installation/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://azure.github.io/aad-pod-identity/docs/getting-started/installation/</guid><description>
 &lt;h2 id="quick-install">Quick Install&lt;/h2>
 &lt;p>To install/upgrade AAD Pod Identity on RBAC-enabled clusters:&lt;/p>
-&lt;pre>&lt;code>kubectl apply -f https://raw.githubusercontent.com/Azure/aad-pod-identity/v1.7.5/deploy/infra/deployment-rbac.yaml
+&lt;pre>&lt;code>kubectl apply -f https://raw.githubusercontent.com/Azure/aad-pod-identity/v1.8.8/deploy/infra/deployment-rbac.yaml
 &lt;/code>&lt;/pre>&lt;details>
 &lt;summary>Result&lt;/summary>
 &lt;pre>&lt;code>serviceaccount/aad-pod-id-nmi-service-account created
@@ -127,7 +130,7 @@ clusterrolebinding.rbac.authorization.k8s.io/aad-pod-id-mic-binding created
 deployment.apps/mic created
 &lt;/code>&lt;/pre>&lt;/details>&lt;br/>
 &lt;p>To install/upgrade aad-pod-identity on RBAC-disabled clusters:&lt;/p>
-&lt;pre>&lt;code>kubectl apply -f https://raw.githubusercontent.com/Azure/aad-pod-identity/v1.7.5/deploy/infra/deployment.yaml
+&lt;pre>&lt;code>kubectl apply -f https://raw.githubusercontent.com/Azure/aad-pod-identity/v1.8.8/deploy/infra/deployment.yaml
 &lt;/code>&lt;/pre>&lt;details>
 &lt;summary>Result&lt;/summary>
 &lt;pre>&lt;code>customresourcedefinition.apiextensions.k8s.io/azureassignedidentities.aadpodidentity.k8s.io created
@@ -138,7 +141,7 @@ daemonset.apps/nmi created
 deployment.apps/mic created
 &lt;/code>&lt;/pre>&lt;/details>&lt;br/>
 &lt;p>For AKS clusters, you will have to allow MIC and AKS add-ons to access IMDS without being intercepted by NMI:&lt;/p>
-&lt;pre>&lt;code>kubectl apply -f https://raw.githubusercontent.com/Azure/aad-pod-identity/v1.7.5/deploy/infra/mic-exception.yaml
+&lt;pre>&lt;code>kubectl apply -f https://raw.githubusercontent.com/Azure/aad-pod-identity/v1.8.8/deploy/infra/mic-exception.yaml
 &lt;/code>&lt;/pre>
 &lt;div class="alert alert-warning" role="alert">
 &lt;h4 class="alert-heading">Warning&lt;/h4>
@@ -151,13 +154,7 @@ azurepodidentityexception.aadpodidentity.k8s.io/aks-addon-exception created
 &lt;/code>&lt;/pre>&lt;/details>
 &lt;h2 id="helm">Helm&lt;/h2>
 &lt;p>AAD Pod Identity allows users to customize their installation via Helm.&lt;/p>
-&lt;blockquote>
-&lt;p>Although AAD Pod Identity helm chart is backward with Helm 2, it is recommended to use Helm 3 instead.&lt;/p>
-&lt;/blockquote>
 &lt;pre>&lt;code>helm repo add aad-pod-identity https://raw.githubusercontent.com/Azure/aad-pod-identity/master/charts
-# Helm 3
 helm install aad-pod-identity aad-pod-identity/aad-pod-identity
-# Helm 2
-helm install aad-pod-identity/aad-pod-identity --set=installCRDs=true
 &lt;/code>&lt;/pre>&lt;h3 id="values">Values&lt;/h3>
 &lt;p>For a list of customizable values that can be injected when invoking &lt;code>helm install&lt;/code>, please see the &lt;a href="https://github.com/Azure/aad-pod-identity/tree/master/charts/aad-pod-identity#configuration">Helm chart configurations&lt;/a>.&lt;/p></description></item></channel></rss>
